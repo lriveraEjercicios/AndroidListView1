@@ -29,11 +29,15 @@ public class MyAdapter extends ArrayAdapter<Product> {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         row = inflater.inflate(layoutResourceId, parent, false);
         TextView tv_texto = (TextView) row.findViewById(R.id.texto);
+        TextView tv_units = (TextView) row.findViewById(R.id.tv_units);
 
-        String valor = data.get(position).getName();
-        tv_texto.setText(valor);
 
-        if (valor.toUpperCase().startsWith("P") || valor.toUpperCase().startsWith("C"))
+        Product p = data.get(position);
+
+        tv_texto.setText(p.getName());
+        tv_units.setText(String.valueOf(p.getUnits()));
+
+        if (p.isIs_bought())
         {
             tv_texto.setTextColor(context.getResources().getColor(R.color.red));
         }

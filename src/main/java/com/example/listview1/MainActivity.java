@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,7 +20,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Activity activity = this;
-    EditText et_product;
+    EditText et_product, et_units;
+    CheckBox checkBox;
     ListView listView;
     MyAdapter adapter;
     ArrayList<Product> products;
@@ -29,8 +31,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         products = new ArrayList<Product>();
+
         et_product = findViewById(R.id.et_product);
+        et_units = findViewById(R.id.et_units);
+        checkBox = findViewById(R.id.chk_bought);
         listView = findViewById(R.id.lv_shopping);
+
         adapter = new MyAdapter(activity, R.layout.row, products);
 
         listView.setAdapter(adapter);
@@ -47,11 +53,8 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = products.get(position).getName();
-                //Alternativa:
-                Product p = (Product) listView.getItemAtPosition(position);
-
-                Toast.makeText(activity, name, Toast.LENGTH_LONG).show();
+               products.get(position).setIs_bought(true);
+               adapter.notifyDataSetChanged();
             }
         });
     }
@@ -83,10 +86,15 @@ public class MainActivity extends AppCompatActivity {
     public void buttonClicked(View view) {
 
         String text = et_product.getText().toString();
-        if (!"".equals(text)) {
-            products.add(new Product(text));
+        String units = et_units.getText().toString();
+        if (!"".equals(text) && !"".equals(units) ) {
+            products.add(new Product(text, Integer.parseInt(units), checkBox.isChecked()));
             adapter.notifyDataSetChanged();
+
+            //Borrar edittext y checbox:
             et_product.setText("");
+            et_units.setText("");
+            checkBox.setChecked(false);
         }
     }
 }
