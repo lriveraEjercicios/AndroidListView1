@@ -10,6 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.listview1.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +21,17 @@ public class MainActivity extends AppCompatActivity {
     Activity activity = this;
     EditText et_product;
     ListView listView;
-    ArrayAdapter<String> adapter;
-    List<String> products;
+    MyAdapter adapter;
+    ArrayList<Product> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        products = new ArrayList<String>();
+        products = new ArrayList<Product>();
         et_product = findViewById(R.id.et_product);
         listView = findViewById(R.id.lv_shopping);
-        adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, android.R.id.text1, products);
+        adapter = new MyAdapter(activity, R.layout.row, products);
 
         listView.setAdapter(adapter);
 
@@ -38,6 +41,17 @@ public class MainActivity extends AppCompatActivity {
                 openDialog(position);
 
                 return true;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String name = products.get(position).getName();
+                //Alternativa:
+                Product p = (Product) listView.getItemAtPosition(position);
+
+                Toast.makeText(activity, name, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -69,9 +83,8 @@ public class MainActivity extends AppCompatActivity {
     public void buttonClicked(View view) {
 
         String text = et_product.getText().toString();
-        if (!"".equals(text))
-        {
-            products.add(text);
+        if (!"".equals(text)) {
+            products.add(new Product(text));
             adapter.notifyDataSetChanged();
             et_product.setText("");
         }
