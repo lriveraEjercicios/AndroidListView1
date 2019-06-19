@@ -20,7 +20,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Activity activity = this;
-    EditText et_product, et_units;
+    EditText et_product, et_units, et_image;
     CheckBox checkBox;
     ListView listView;
     MyAdapter adapter;
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         et_product = findViewById(R.id.et_product);
         et_units = findViewById(R.id.et_units);
+        et_image = findViewById(R.id.et_image);
         checkBox = findViewById(R.id.chk_bought);
         listView = findViewById(R.id.lv_shopping);
 
@@ -87,14 +88,39 @@ public class MainActivity extends AppCompatActivity {
 
         String text = et_product.getText().toString();
         String units = et_units.getText().toString();
-        if (!"".equals(text) && !"".equals(units) ) {
-            products.add(new Product(text, Integer.parseInt(units), checkBox.isChecked()));
+        String url_image = et_image.getText().toString();
+        if (checkFields(text, units, url_image)) {
+            products.add(new Product(text, Integer.parseInt(units), checkBox.isChecked(), url_image));
             adapter.notifyDataSetChanged();
 
             //Borrar edittext y checbox:
             et_product.setText("");
             et_units.setText("");
+            et_image.setText("");
             checkBox.setChecked(false);
         }
+
+    }
+
+    private boolean checkFields(String text, String units, String url)
+    {
+        boolean result=true;
+        if ("".equals(text))
+        {
+            result=false;
+            et_product.setError("El nombre no puede estar vacio"); //TODO: Ponerlo en strings
+        }
+        if ("".equals(units))
+        {
+            result=false;
+            et_units.setError("Unidades no puede estar vacio"); //TODO: Ponerlo en strings
+        }
+        if ("".equals(url))
+        {
+            result=false;
+            et_image.setError("La url no puede estar vacio"); //TODO: Ponerlo en strings
+        }
+
+        return result;
     }
 }

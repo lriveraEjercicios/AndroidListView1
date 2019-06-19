@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.listview1.model.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -30,12 +32,14 @@ public class MyAdapter extends ArrayAdapter<Product> {
         row = inflater.inflate(layoutResourceId, parent, false);
         TextView tv_texto = (TextView) row.findViewById(R.id.texto);
         TextView tv_units = (TextView) row.findViewById(R.id.tv_units);
-
+        ImageView imageView = (ImageView) row.findViewById(R.id.iv_image);
 
         Product p = data.get(position);
 
         tv_texto.setText(p.getName());
         tv_units.setText(String.valueOf(p.getUnits()));
+
+        Picasso.get().load(p.getUrl_image()).into(imageView);
 
         if (p.isIs_bought())
         {

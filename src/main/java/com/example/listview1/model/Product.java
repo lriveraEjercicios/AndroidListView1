@@ -3,6 +3,7 @@ package com.example.listview1.model;
 public class Product {
     String name;
     int units;
+    String url_image;
     boolean is_bought;
 
     public Product(String name) {
@@ -11,10 +12,11 @@ public class Product {
         is_bought=false;
     }
 
-    public Product(String name, int units, boolean is_bought) {
+    public Product(String name, int units, boolean is_bought, String url_image) {
         this.name = name;
         this.units = units;
         this.is_bought = is_bought;
+        this.url_image = url_image;
     }
 
     public String getName() {
@@ -39,5 +41,13 @@ public class Product {
 
     public void setIs_bought(boolean is_bought) {
         this.is_bought = is_bought;
+    }
+
+    public String getUrl_image() {
+        return url_image;
+    }
+
+    public void setUrl_image(String url_image) {
+        this.url_image = url_image;
     }
 }
